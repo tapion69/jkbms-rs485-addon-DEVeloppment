@@ -1,12 +1,179 @@
+## v3.6.1 - 26-02-2026
+
+## ⚡️ Enhancements
+## Add Cell support with 8 -15 - 16 - n cells controlled by JK-BMS
+
+Support for a number of cells other than 16 is now enabled.
+I need a few people to test it and give me feedback
+on how it works.
+
+##  _______________________________________________________
+
+## v3.5.7 - 2-02-2026
+## 🐞 Corrections (Bugfix)
+
+### Correction of the logic to allow Charge/Discharge/Balance switching 
+[Issue #107](https://github.com/jean-luc1203/jkbms-rs485-addon/issues/107)
+
+### Correction of the "expected SensorDeviceClass"
+[Issue #102](https://github.com/jean-luc1203/jkbms-rs485-addon/issues/102)
+
+
+##  _______________________________________________________
+
+
+## v3.5.6 - 01-02-2026
+## 🐞 Corrections (Bugfix)
+### Correction of temperature probe values in broadcasting mode
+
+[Issue #91](https://github.com/jean-luc1203/jkbms-rs485-addon/issues/91)
+
+
+Correspondence between the RS485 module and the JK-bluetooth application:
+ 
+- capt.1 = T1
+- capt.2 = T2
+- capt.3 = T5
+- capt.4 = T4
+- MOS = MOS
+
+> **1,690+ installations** · **40+ daily clones** · **Community-driven development**
+
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y3YHYZP) [![Donate with PayPal](https://raw.githubusercontent.com/jean-luc1203/jkbms-rs485-addon/main/images/paypal.png)](https://www.paypal.com/donate/?hosted_button_id=864NCUWH4VJ8N)
+
+
+##  _______________________________________________________
+
+## v3.5.5 - 28-01-2026
+## ⚡️ Enhancements
+### Add Charging Float Mode" switch control
+
+- Charging Float Mode on a JK-BMS is used to manage a float charge once the battery is full.
+
+👉 In concrete terms:
+
+- When the target end-of-charge voltage is reached,
+
+- the BMS cuts off and then temporarily re-authorises charging to maintain the battery at a stable voltage,
+
+- instead of leaving it constantly on charge..
+
+🎯 Main objective:
+
+- avoid overload,
+
+- reduce cell stress,
+
+- improve battery life (especially when stationary).
+
+<img width="527" height="60" alt="image" src="https://github.com/user-attachments/assets/37d11e26-1e5b-4634-aef8-567239e8a026" />
+
+Issue ![#95](https://github.com/jean-luc1203/jkbms-rs485-addon/issues/95)
+
+
+### 🐞 Corrections (Bugfix)
+The switch created in v3.5.4 did not function correctly in certain situations.
+
+##  _______________________________________________________
+
+## v3.5.4 - 24-01-2026
+## ⚡️ Enhancements
+#### Addition of an Authorization/Prohibition Switch entity to modify settings
+
+In the Global BMS device, this switch: 
+- switch.bms_global_authorize_modify_settings (ON / OFF)
+
+enables/disables the ability to modify BMS settings. 
+
+This is to prevent unwanted and unintended modifications.
+This entity acts on all BMS devices.
+
+<img width="829" height="419" alt="image" src="https://github.com/user-attachments/assets/7f5a1bda-b878-4762-93e0-31ea0b8ac057" />
+
+
+##  _______________________________________________________
+
+## v3.5.3 - 16-01-2026
+## ⚡️ Enhancements
+#### Optimisation of the number of alarm messages sent per second
+
+**BEFORE** Over 60 seconds with 2 BMS:  
+*30 messages / 60s = 0.5 msg/s EVEN IF NOTHING CHANGES*
+
+
+**AFTER** optimisation Over 60 seconds with 2 BMS (normal scenario, no alarms): 
+*2 messages / 60s = 0.03 msg/s   Reduction: ÷ 15! (from 30 to 2 messages)*
+
+If an alarm appears on a BMS:
+
+*Timeline:
+  Overall status OFF → 0 messages
+  BMS_2 alarm ON → Aggregation detects: OFF → ON → 1 message 🚨
+  Status remains ON   → 0 messages
+  BMS_2 alarm OFF → Aggregation detects: ON → OFF → 1 message ✅*
+
+##📈 **TOTAL summary** with all optimisations in versions **v3.5.2 & v3.5.3**
+## Final result: **75 msg/s → ~33.5 msg/s (÷ 2.2)** 🎉
+
+The Broker will appreciate this 💪 . 
+This will be even more noticeable as the number of BMSs increases.
+
+##Other changes.
+
+Filters added for invalid BMS numbers. Only the following should remain:
+BMS_master, BMS_1 to BMS_15
+
+<img width="389" height="249" alt="image" src="https://github.com/user-attachments/assets/6975e234-4126-4221-8713-fa07c81c9d4b" />
+
+##  ____________________________________________________________________
+
+
+## v3.5.2 - 15-01-2026
+## ⚡️ Enhancements
+
+#### Optimisation of the number of topics sent to the MQTT Broker
+Indeed, for 2 BMS measured over 60 seconds:
+
+📊 **Before and after comparison**
+
+| Metric | BEFORE (Non-optimised setup) | AFTER Phase 1 (Optimised setup) | Gain |
+| :--- | :--- | :--- | :--- |
+| Messages total/60s | ~4600 | 2000 | -57% |
+| Overall average | 75-77 msg/s | 33.67 msg/s | ÷ 2.3 |
+| BMS_master | 39 msg/s | 17 msg/s | ÷ 2.3 |
+| BMS_2 | 37 msg/s | 16.66 msg/s | ÷ 2.2 |
+
+I have reduced the number of setup frames sent. 
+They are now only sent when the module starts up and when a setup is modified.
+### This results in a **2.3x reduction** in the number of topics sent. 
+The broker will appreciate this 👍
+Data frames are still sent at a rate of 4 seconds.
+
+##  ____________________________________________________________________
+
+
 ## v3.5.1 - 09-01-2026
 
 ### 🐞 Corrections (Bugfix)
 
-A complete overhaul of the section that processes TCP/IP gateway data.
+[Issue#80](https://github.com/jean-luc1203/jkbms-rs485-addon/issues/80)
+# A complete overhaul of the section that processes **TCP/IP gateway** data.
 
 The frames coming from these gateways are poorly ordered, broken or mixed up.
 
-I had to reconstruct them before processing them for decryption.
+	I had to reconstruct them before processing them for decryption.
+
+#### ⚠️  Normally, no changes should be noticed by those using the USB adapter.
+
+-----------------------------------------------
+
+<img width="225" height="653" alt="image" src="https://github.com/user-attachments/assets/80efd86e-6b9c-4526-9129-779bdc628d37" />
+
+<img width="327" height="324" alt="image" src="https://github.com/user-attachments/assets/02e3f43d-bc81-4060-b050-7fcbcccd8ed2" />
+
+<img width="297" height="256" alt="image" src="https://github.com/user-attachments/assets/bf40efec-307b-4a32-926e-cade18f0f220" />
+
+-----------------------------------------------
 
 
 ## v3.4.2 - 26-12-2025
