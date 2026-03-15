@@ -1,11 +1,23 @@
-## v3.6.1 - 26-02-2026
-
+## v3.6.4 - 14-03-2026
 ## ⚡️ Enhancements
-## Add Cell support with 8 -15 - 16 - n cells controlled by JK-BMS
 
-Support for a number of cells other than 16 is now enabled.
-I need a few people to test it and give me feedback
-on how it works.
+## Improved RS485 Broadcast Stability
+
+- Added a software RS485 broadcast framer to reliably separate Modbus polls and JK-BMS replies from the serial stream.
+- Introduced serial diagnostics and health metrics (`BMS_GLOBAL/health`) to monitor bus activity and detect communication issues.
+- Improved frame detection to handle mixed buffers and avoid decoder stalls in broadcast mode.
+- Added troubleshooting documentation and diagnostic guidance for easier debugging of RS485 installations.
+  [Look at the documentation here](https://github.com/jean-luc1203/jkbms-rs485-addon/blob/main/Documentation
+ /jkbms_rs485_troubleshooting_enhanced.md)
+- Added safe normalization for persisted Buffer objects restored by Node-RED after restart/update.
+- Prevented RS485 framer crashes caused by serialized context buffers (`{type:"Buffer",data:[...]}`).
+- Added automatic recovery for invalid or legacy binary context values.
+- Improved upgrade safety for long-running serial/TCP parsing flows.
+
+## TCP reconnection watchdog 
+- added a monitoring mechanism that detects the absence of data from the IP-RS485 gateway for more than 2 minutes and automatically forces a disconnect/reconnect cycle on the `tcp-client` node.
+- **Reconnection parameters**: changed `indefiniteRetries` from `false` (giving up after 5 attempts) to `true`, with `maxRetries: 10` and `retryDelay: 5000ms` to ensure persistent reconnection on network failures.
+[Issue #91](https://github.com/jean-luc1203/jkbms-rs485-addon/issues/110)
 
 ##  _______________________________________________________
 
