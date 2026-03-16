@@ -1,6 +1,8 @@
 ## v3.6.5 - 16-03-2026
 ## ⚡️ Enhancements
-- Adding counters to verify the quality of the RS-485 bus 
+- Adding counters to verify the quality of the RS-485 bus
+
+<img width="527" height="400" alt="image" src="https://github.com/jean-luc1203/jkbms-rs485-addon-DEVeloppment/blob/main/images/new-rs485-counters.png" />
 
 ##  _______________________________________________________
 
