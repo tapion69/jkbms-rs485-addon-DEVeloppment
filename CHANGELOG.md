@@ -1,3 +1,10 @@
+## v3.6.5 - 16-03-2026
+## ⚡️ Enhancements
+- Adding counters to verify the quality of the RS-485 bus 
+
+##  _______________________________________________________
+
+
 ## v3.6.4 - 14-03-2026
 ## ⚡️ Enhancements
 
