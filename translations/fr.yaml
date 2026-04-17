@@ -49,3 +49,18 @@ configuration:
   Send_bip:
     name: "📊 Utilisation de l'Add-on"
     description: "Activer l'envoi d'un bip au démarrage. Aucune donnée privée n'est transmise. Le traitement est conforme au RGPD."
+
+  dashboard_section:
+    name: ────────── DASHBOARD ──────────
+  dashboard_custom_cards_installed:
+    name: Cartes personnalisées du dashboard installées
+  dashboard_language:
+    name: Langue du dashboard
+
+  premium_section:
+    name: ────────── PREMIUM ──────────
+  premium_key:
+    name: Clé Premium
+
+
+
