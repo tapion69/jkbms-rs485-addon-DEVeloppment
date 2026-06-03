@@ -32,7 +32,9 @@ RUN apk update \
         bluez \
         dbus \
         python3 \
-    && pip3 install --break-system-packages \
+        py3-virtualenv \
+    && python3 -m venv /opt/ble-venv \
+    && /opt/ble-venv/bin/pip install --no-cache-dir \
         bleak \
         paho-mqtt \
     && npm config set fetch-timeout 300000 \
