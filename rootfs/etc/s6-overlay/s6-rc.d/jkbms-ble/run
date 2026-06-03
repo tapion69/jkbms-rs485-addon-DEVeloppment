@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bashio
+
+echo "[JK-BMS BLE] Service Bluetooth démarré"
+
+python3 /usr/local/bin/jkbms_ble_reader.py
