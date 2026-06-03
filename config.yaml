@@ -31,6 +31,8 @@ map:
   - config:rw
   - media:rw
   - share:rw
+  - type: dbus
+    read_only: false
 
 options:
   # JK-BMS Configuration
