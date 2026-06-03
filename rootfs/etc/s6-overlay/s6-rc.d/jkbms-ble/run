@@ -2,4 +2,13 @@
 
 echo "[JK-BMS BLE] Service Bluetooth démarré"
 
-python3 /usr/local/bin/jkbms_ble_reader.py
+if bashio::config.true 'bluetooth_usage'; then
+    if bashio::config.true 'bluetooth_scan'; then
+        echo "[JK-BMS BLE] Scan Bluetooth JK-BMS..."
+        /opt/ble-venv/bin/python /usr/local/bin/jkbms_ble_reader.py --scan --timeout 10
+    fi
+else
+    echo "[JK-BMS BLE] Bluetooth désactivé dans la configuration"
+fi
+
+sleep infinity
