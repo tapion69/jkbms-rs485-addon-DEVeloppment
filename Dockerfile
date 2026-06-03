@@ -1,17 +1,12 @@
 ARG BUILD_FROM=ghcr.io/hassio-addons/base:stable
-# hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
-# Copy Node-RED package.json
 COPY package.json /opt/
 
-# Set workdir
 WORKDIR /opt
 
-# Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Setup base
 RUN apk update \
     && apk add --no-cache --upgrade \
         musl \
@@ -34,6 +29,12 @@ RUN apk update \
         iproute2 \
         bash \
         mosquitto-clients \
+        bluez \
+        dbus \
+        python3 \
+    && pip3 install --break-system-packages \
+        bleak \
+        paho-mqtt \
     && npm config set fetch-timeout 300000 \
     && npm config set fetch-retry-mintimeout 20000 \
     && npm config set fetch-retry-maxtimeout 120000 \
@@ -59,20 +60,18 @@ RUN apk update \
         /root/.nrpmrc \
         /tmp/*
 
-# Copy root filesystem
 COPY rootfs /
 
-# Garantir les droits dans l'image Docker
 RUN chmod +x \
     /etc/s6-overlay/s6-rc.d/init-customizations/run \
     /etc/s6-overlay/s6-rc.d/init-customizations/up \
-    /etc/s6-overlay/s6-rc.d/init-customizations/type
+    /etc/s6-overlay/s6-rc.d/init-customizations/type \
+    /etc/s6-overlay/s6-rc.d/jkbms-ble/run \
+    /usr/local/bin/jkbms_ble_reader.py
 
-# Health check
 HEALTHCHECK --start-period=10m \
     CMD curl --fail http://127.0.0.1:1891 || exit 1
 
-# Build arguments
 ARG BUILD_ARCH
 ARG BUILD_DATE
 ARG BUILD_DESCRIPTION
@@ -83,7 +82,6 @@ ARG BUILD_VERSION
 
 ENV VERSION=${BUILD_VERSION}
 
-# Labels
 LABEL \
     io.hass.name="${BUILD_NAME}" \
     io.hass.description="${BUILD_DESCRIPTION}" \
